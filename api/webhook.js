@@ -5,13 +5,13 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const ANALYTICS_CHAT_ID = process.env.ANALYTICS_CHAT_ID;
 
 const PHOTOS = {
-  welcome: 'AgACAgIAAxkBAAMPaamDRbNMiLe39wQ73c_kQWx_-2EAAjERaxs1GlBJdOXqveMoSuoBAAMCAAN5AAM6BA', // B1 временно
-  a1: 'AgACAgIAAxkBAAMPaamDRbNMiLe39wQ73c_kQWx_-2EAAjERaxs1GlBJdOXqveMoSuoBAAMCAAN5AAM6BA', // B1 временно
-  a2: 'AgACAgIAAxkBAAMQaamDRQrZZShpgLhW0J-_0TXo8uMAAjIRaxs1GlBJBy80knLNBZYBAAMCAAN5AAM6BA', // B2 временно
-  a3: 'AgACAgIAAxkBAAMRaamDRfkGYG03vsLhe-0sp_vu8pkAAjMRaxs1GlBJT5ksrZFkGTIBAAMCAAN5AAM6BA', // A3/B3 каналы
-  a4: 'AgACAgIAAxkBAAMSaamDRZ6Gt3mDJUxkmx5oo7x6H9EAAjQRaxs1GlBJyuO9kgUVGLYBAAMCAAN5AAM6BA', // A4/B4 финал
-  b1: 'AgACAgIAAxkBAAMPaamDRbNMiLe39wQ73c_kQWx_-2EAAjERaxs1GlBJdOXqveMoSuoBAAMCAAN5AAM6BA', // B1
-  b2: 'AgACAgIAAxkBAAMQaamDRQrZZShpgLhW0J-_0TXo8uMAAjIRaxs1GlBJBy80knLNBZYBAAMCAAN5AAM6BA', // B2
+  welcome: 'AgACAgIAAxkBAAMPaamDRbNMiLe39wQ73c_kQWx_-2EAAjERaxs1GlBJdOXqveMoSuoBAAMCAAN5AAM6BA', // временно A1, потом свое
+  a1: 'AgACAgIAAxkBAAMPaamDRbNMiLe39wQ73c_kQWx_-2EAAjERaxs1GlBJdOXqveMoSuoBAAMCAAN5AAM6BA', // A1 ✅
+  a2: 'AgACAgIAAxkBAAMQaamDRQrZZShpgLhW0J-_0TXo8uMAAjIRaxs1GlBJBy80knLNBZYBAAMCAAN5AAM6BA', // A2 ✅
+  a3: 'AgACAgIAAxkBAAMRaamDRfkGYG03vsLhe-0sp_vu8pkAAjMRaxs1GlBJT5ksrZFkGTIBAAMCAAN5AAM6BA', // A3 каналы ✅
+  a4: 'AgACAgIAAxkBAAMSaamDRZ6Gt3mDJUxkmx5oo7x6H9EAAjQRaxs1GlBJyuO9kgUVGLYBAAMCAAN5AAM6BA', // A4 финал ✅
+  b1: 'AgACAgIAAxkBAAMPaamDRbNMiLe39wQ73c_kQWx_-2EAAjERaxs1GlBJdOXqveMoSuoBAAMCAAN5AAM6BA', // временно A1, потом свое
+  b2: 'AgACAgIAAxkBAAMQaamDRQrZZShpgLhW0J-_0TXo8uMAAjIRaxs1GlBJBy80knLNBZYBAAMCAAN5AAM6BA', // временно A2, потом свое
   b3: 'AgACAgIAAxkBAAMRaamDRfkGYG03vsLhe-0sp_vu8pkAAjMRaxs1GlBJT5ksrZFkGTIBAAMCAAN5AAM6BA', // B3 каналы (то же что A3)
   b4: 'AgACAgIAAxkBAAMSaamDRZ6Gt3mDJUxkmx5oo7x6H9EAAjQRaxs1GlBJyuO9kgUVGLYBAAMCAAN5AAM6BA'  // B4 финал (то же что A4)
 };
@@ -20,7 +20,7 @@ const adminState = new Map();
 
 async function sendStart(ctx) {
   try {
-    await trackUserAction(ctx.from.id, 'start', null);
+    trackUserAction(ctx.from.id, 'start', null); // Не ждем
     
     await ctx.replyWithPhoto(PHOTOS.welcome, {
       caption: '👋 Привет! Выбери, что тебя интересует:',
@@ -30,8 +30,6 @@ async function sendStart(ctx) {
       ])
     });
   } catch (error) {
-    console.error('Error in sendStart:', error);
-    // Fallback без фото
     await ctx.reply('👋 Привет! Выбери, что тебя интересует:', 
       Markup.inlineKeyboard([
         [Markup.button.callback('🚀 Получить обход Roblox', 'path_a')],
@@ -42,7 +40,7 @@ async function sendStart(ctx) {
 }
 
 async function sendA1(ctx) {
-  await trackUserAction(ctx.from.id, 'path_a_selected', 'a');
+  trackUserAction(ctx.from.id, 'path_a_selected', 'a'); // Не ждем
   
   await ctx.editMessageMedia(
     { type: 'photo', media: PHOTOS.a1, caption: 'Надоели блокировки Roblox? У нас есть решение! Без ВПН и прочих заморочек' },
@@ -77,7 +75,7 @@ async function sendA3(ctx) {
 }
 
 async function sendA4(ctx) {
-  await trackUserAction(ctx.from.id, 'access_a', 'a');
+  trackUserAction(ctx.from.id, 'access_a', 'a'); // Не ждем
   
   await ctx.editMessageMedia(
     { type: 'photo', media: PHOTOS.a4, caption: 'Ваша заявка будет проверена в течении 24 часов. ПРИМЕЧАНИЕ: если вы не подписались на каналы заявка будет автоматически отклонена' },
@@ -89,7 +87,7 @@ async function sendA4(ctx) {
 }
 
 async function sendB1(ctx) {
-  await trackUserAction(ctx.from.id, 'path_b_selected', 'b');
+  trackUserAction(ctx.from.id, 'path_b_selected', 'b'); // Не ждем
   
   await ctx.editMessageMedia(
     { type: 'photo', media: PHOTOS.b1, caption: 'Хочешь получить бесплатные Robux? Участвуй в нашем мега-розыгрыше!' },
@@ -124,7 +122,7 @@ async function sendB3(ctx) {
 }
 
 async function sendB4(ctx) {
-  await trackUserAction(ctx.from.id, 'access_b', 'b');
+  trackUserAction(ctx.from.id, 'access_b', 'b'); // Не ждем
   
   await ctx.editMessageMedia(
     { type: 'photo', media: PHOTOS.b4, caption: 'Ваша заявка на участие будет проверена в течении 24 часов. ПРИМЕЧАНИЕ: если вы не подписались на каналы заявка будет автоматически отклонена' },
@@ -139,6 +137,7 @@ bot.command('start', sendStart);
 
 bot.action('start', async (ctx) => {
   await ctx.answerCbQuery();
+  await ctx.deleteMessage();
   await sendStart(ctx);
 });
 
@@ -301,7 +300,6 @@ export default async function handler(req, res) {
       await bot.handleUpdate(req.body);
       return res.status(200).json({ ok: true });
     } catch (error) {
-      console.error('Webhook error:', error);
       return res.status(200).json({ ok: true });
     }
   }
