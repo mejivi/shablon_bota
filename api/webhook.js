@@ -50,7 +50,7 @@ async function sendA1(ctx) {
 
 async function sendA2(ctx) {
   await ctx.editMessageMedia(
-    { type: 'photo', media: PHOTOS.a2, caption: '📖 Описание способа обхода:\n\n1. Скачай приложение\n2. Следуй инструкции\n3. Играй без блокировок!' },
+    { type: 'photo', media: PHOTOS.a2 },
     Markup.inlineKeyboard([[Markup.button.callback('Далее', 'a3')]])
   );
 }
@@ -68,11 +68,12 @@ async function sendA3(ctx) {
   
   const buttons = [];
   
-  for (let i = 0; i < 4 && i < channels.length; i++) {
-    buttons.push([Markup.button.url(`📢 Канал ${i + 1}`, channels[i])]);
-  }
-  for (let i = 4; i < 8 && i < channels.length; i++) {
-    buttons.push([Markup.button.url(`📢 Канал ${i + 1}`, channels[i])]);
+  // 4 ряда по 2 кнопки
+  for (let i = 0; i < 8; i += 2) {
+    const row = [];
+    if (channels[i]) row.push(Markup.button.url(`📢 Канал ${i + 1}`, channels[i]));
+    if (channels[i + 1]) row.push(Markup.button.url(`📢 Канал ${i + 2}`, channels[i + 1]));
+    if (row.length > 0) buttons.push(row);
   }
   
   buttons.push([Markup.button.callback('Получить доступ', 'a_access')]);
@@ -106,7 +107,7 @@ async function sendB1(ctx) {
 
 async function sendB2(ctx) {
   await ctx.editMessageMedia(
-    { type: 'photo', media: PHOTOS.b2, caption: '🎁 Правила розыгрыша:\n\n• Подпишись на каналы\n• Дождись проверки\n• Получи шанс выиграть Robux!' },
+    { type: 'photo', media: PHOTOS.b2 },
     Markup.inlineKeyboard([[Markup.button.callback('Далее', 'b3')]])
   );
 }
@@ -124,11 +125,12 @@ async function sendB3(ctx) {
   
   const buttons = [];
   
-  for (let i = 0; i < 4 && i < channels.length; i++) {
-    buttons.push([Markup.button.url(`📢 Канал ${i + 1}`, channels[i])]);
-  }
-  for (let i = 4; i < 8 && i < channels.length; i++) {
-    buttons.push([Markup.button.url(`📢 Канал ${i + 1}`, channels[i])]);
+  // 4 ряда по 2 кнопки
+  for (let i = 0; i < 8; i += 2) {
+    const row = [];
+    if (channels[i]) row.push(Markup.button.url(`📢 Канал ${i + 1}`, channels[i]));
+    if (channels[i + 1]) row.push(Markup.button.url(`📢 Канал ${i + 2}`, channels[i + 1]));
+    if (row.length > 0) buttons.push(row);
   }
   
   buttons.push([Markup.button.callback('Участвовать', 'b_access')]);
