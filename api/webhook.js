@@ -57,6 +57,15 @@ async function sendA2(ctx) {
 
 async function sendA3(ctx) {
   const channels = await getChannels();
+  
+  if (channels.length === 0) {
+    await ctx.editMessageCaption(
+      'Подпишитесь на каналы (там будут обновленные способы и полезная информация для игры в Роблокс)\n\n⚠️ Каналы еще не настроены администратором',
+      Markup.inlineKeyboard([[Markup.button.callback('Получить доступ', 'a_access')]])
+    );
+    return;
+  }
+  
   const buttons = [];
   
   for (let i = 0; i < 4 && i < channels.length; i++) {
@@ -104,6 +113,15 @@ async function sendB2(ctx) {
 
 async function sendB3(ctx) {
   const channels = await getChannels();
+  
+  if (channels.length === 0) {
+    await ctx.editMessageCaption(
+      'Подпишитесь на каналы (там регулярно проходят розыгрыши Robux и раздачи)\n\n⚠️ Каналы еще не настроены администратором',
+      Markup.inlineKeyboard([[Markup.button.callback('Участвовать', 'b_access')]])
+    );
+    return;
+  }
+  
   const buttons = [];
   
   for (let i = 0; i < 4 && i < channels.length; i++) {
@@ -228,6 +246,15 @@ bot.command('stat_link', async (ctx) => {
 
 bot.command('chatid', async (ctx) => {
   await ctx.reply(`📋 ID этого чата: ${ctx.chat.id}`);
+});
+
+bot.command('testdb', async (ctx) => {
+  try {
+    const channels = await getChannels();
+    await ctx.reply(`✅ БД подключена!\n\nКаналов в БД: ${channels.length}\n\n${channels.length > 0 ? channels.join('\n') : 'Каналы не настроены'}`);
+  } catch (error) {
+    await ctx.reply(`❌ Ошибка подключения к БД:\n\n${error.message}`);
+  }
 });
 
 bot.command('upload_photo', async (ctx) => {
