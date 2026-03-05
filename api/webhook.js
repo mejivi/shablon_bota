@@ -5,12 +5,15 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const ANALYTICS_CHAT_ID = process.env.ANALYTICS_CHAT_ID;
 
 const PHOTOS = {
-  a1: 'AgACAgIAAxkBAAMSaaXRna3rOvOOHsT68ihcS9ztUxkAAgoWaxum1zFJr0Yn46-pQD0BAAMCAAN5AAM6BA',
-  a2: 'AgACAgIAAxkBAAIBJWmogKOR8SPTF1ElXynFU7tPNjh_AALTEmsbuNBJSUcM_p-R2UbqAQADAgADeQADOgQ',
-  a3: 'AgACAgIAAxkBAAMWaaXRuus7JPNllv6nl-OcedWM8CcAAgwWaxum1zFJbrjaDwebOkIBAAMCAAN5AAM6BA',
-  b1: 'AgACAgIAAxkBAAMYaaXR0z43iORBDW0uIkVh4e5voRoAAg0Waxum1zFJa1LSTZUSnUkBAAMCAAN5AAM6BA',
-  b2: 'AgACAgIAAxkBAAMaaaXR5sYYs8a8gbApiXjy8awPhWUAAg4Waxum1zFJepcaG5_7fuYBAAMCAAN5AAM6BA',
-  b3: 'AgACAgIAAxkBAAMWaaXRuus7JPNllv6nl-OcedWM8CcAAgwWaxum1zFJbrjaDwebOkIBAAMCAAN5AAM6BA'
+  welcome: 'AgACAgIAAxkBAAMPaamDRbNMiLe39wQ73c_kQWx_-2EAAjERaxs1GlBJdOXqveMoSuoBAAMCAAN5AAM6BA', // B1 временно
+  a1: 'AgACAgIAAxkBAAMPaamDRbNMiLe39wQ73c_kQWx_-2EAAjERaxs1GlBJdOXqveMoSuoBAAMCAAN5AAM6BA', // B1 временно
+  a2: 'AgACAgIAAxkBAAMQaamDRQrZZShpgLhW0J-_0TXo8uMAAjIRaxs1GlBJBy80knLNBZYBAAMCAAN5AAM6BA', // B2 временно
+  a3: 'AgACAgIAAxkBAAMRaamDRfkGYG03vsLhe-0sp_vu8pkAAjMRaxs1GlBJT5ksrZFkGTIBAAMCAAN5AAM6BA', // A3/B3 каналы
+  a4: 'AgACAgIAAxkBAAMSaamDRZ6Gt3mDJUxkmx5oo7x6H9EAAjQRaxs1GlBJyuO9kgUVGLYBAAMCAAN5AAM6BA', // A4/B4 финал
+  b1: 'AgACAgIAAxkBAAMPaamDRbNMiLe39wQ73c_kQWx_-2EAAjERaxs1GlBJdOXqveMoSuoBAAMCAAN5AAM6BA', // B1
+  b2: 'AgACAgIAAxkBAAMQaamDRQrZZShpgLhW0J-_0TXo8uMAAjIRaxs1GlBJBy80knLNBZYBAAMCAAN5AAM6BA', // B2
+  b3: 'AgACAgIAAxkBAAMRaamDRfkGYG03vsLhe-0sp_vu8pkAAjMRaxs1GlBJT5ksrZFkGTIBAAMCAAN5AAM6BA', // B3 каналы (то же что A3)
+  b4: 'AgACAgIAAxkBAAMSaamDRZ6Gt3mDJUxkmx5oo7x6H9EAAjQRaxs1GlBJyuO9kgUVGLYBAAMCAAN5AAM6BA'  // B4 финал (то же что A4)
 };
 
 const adminState = new Map();
@@ -19,7 +22,7 @@ async function sendStart(ctx) {
   try {
     await trackUserAction(ctx.from.id, 'start', null);
     
-    await ctx.replyWithPhoto(PHOTOS.a1, {
+    await ctx.replyWithPhoto(PHOTOS.welcome, {
       caption: '👋 Привет! Выбери, что тебя интересует:',
       ...Markup.inlineKeyboard([
         [Markup.button.callback('🚀 Получить обход Roblox', 'path_a')],
@@ -76,8 +79,8 @@ async function sendA3(ctx) {
 async function sendA4(ctx) {
   await trackUserAction(ctx.from.id, 'access_a', 'a');
   
-  await ctx.editMessageCaption(
-    'Ваша заявка будет проверена в течении 24 часов. ПРИМЕЧАНИЕ: если вы не подписались на каналы заявка будет автоматически отклонена',
+  await ctx.editMessageMedia(
+    { type: 'photo', media: PHOTOS.a4, caption: 'Ваша заявка будет проверена в течении 24 часов. ПРИМЕЧАНИЕ: если вы не подписались на каналы заявка будет автоматически отклонена' },
     Markup.inlineKeyboard([
       [Markup.button.callback('Подписаться на каналы', 'a3')],
       [Markup.button.callback('Главное меню', 'start')]
@@ -123,8 +126,8 @@ async function sendB3(ctx) {
 async function sendB4(ctx) {
   await trackUserAction(ctx.from.id, 'access_b', 'b');
   
-  await ctx.editMessageCaption(
-    'Ваша заявка на участие будет проверена в течении 24 часов. ПРИМЕЧАНИЕ: если вы не подписались на каналы заявка будет автоматически отклонена',
+  await ctx.editMessageMedia(
+    { type: 'photo', media: PHOTOS.b4, caption: 'Ваша заявка на участие будет проверена в течении 24 часов. ПРИМЕЧАНИЕ: если вы не подписались на каналы заявка будет автоматически отклонена' },
     Markup.inlineKeyboard([
       [Markup.button.callback('Подписаться на каналы', 'b3')],
       [Markup.button.callback('Главное меню', 'start')]
