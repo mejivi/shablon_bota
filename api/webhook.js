@@ -16,15 +16,26 @@ const PHOTOS = {
 const adminState = new Map();
 
 async function sendStart(ctx) {
-  await trackUserAction(ctx.from.id, 'start', null);
-  
-  await ctx.replyWithPhoto(PHOTOS.a1, {
-    caption: '👋 Привет! Выбери, что тебя интересует:',
-    ...Markup.inlineKeyboard([
-      [Markup.button.callback('🚀 Получить обход Roblox', 'path_a')],
-      [Markup.button.callback('🎁 Участвовать в розыгрыше Robux', 'path_b')]
-    ])
-  });
+  try {
+    await trackUserAction(ctx.from.id, 'start', null);
+    
+    await ctx.replyWithPhoto(PHOTOS.a1, {
+      caption: '👋 Привет! Выбери, что тебя интересует:',
+      ...Markup.inlineKeyboard([
+        [Markup.button.callback('🚀 Получить обход Roblox', 'path_a')],
+        [Markup.button.callback('🎁 Участвовать в розыгрыше Robux', 'path_b')]
+      ])
+    });
+  } catch (error) {
+    console.error('Error in sendStart:', error);
+    // Fallback без фото
+    await ctx.reply('👋 Привет! Выбери, что тебя интересует:', 
+      Markup.inlineKeyboard([
+        [Markup.button.callback('🚀 Получить обход Roblox', 'path_a')],
+        [Markup.button.callback('🎁 Участвовать в розыгрыше Robux', 'path_b')]
+      ])
+    );
+  }
 }
 
 async function sendA1(ctx) {
